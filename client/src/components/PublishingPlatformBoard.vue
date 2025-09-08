@@ -563,9 +563,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+import api from '@/services/api';
 
 interface User {
   _id: string;

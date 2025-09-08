@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api"; // Cambiar en producción
+const API = "/api/register"; // Cambiar en producción
 
 // Configuración de axios con el token
 const api = axios.create({

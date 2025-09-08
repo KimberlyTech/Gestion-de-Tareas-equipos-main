@@ -1,26 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API = "http://localhost:5000/api";
+const base = (import.meta.env.VITE_API_BASE || '').replace(/\/+$/, '');
 
-export const login = async (email: string, password: string) => {
-  const res = await axios.post(`${API}/login`, { email, password });
-  const { token, usuario } = res.data;
-  localStorage.setItem("token", token);
-  return usuario;
-};
+const api = axios.create({
+  baseURL: base, // dev: http://localhost:5000 | prod: https://ticketslonewolf.onrender.com
+  timeout: 15000,
+  headers: { 'Content-Type': 'application/json' },
+});
 
-export const register = async (nombre: string, email: string, password: string) => {
-  const res = await axios.post(`${API}/register`, { nombre, email, password });
-  return res.data;
-};
-
-// NUEVA FUNCIÓN: Obtener usuarios
-export const getUsers = async (): Promise<any[]> => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  const res = await axios.get(`${API}/users`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  return res.data;
-};
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+export default api;

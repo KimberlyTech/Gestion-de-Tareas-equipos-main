@@ -9,8 +9,15 @@ import authRoutes from './routes/authRoutes.js';
 import boardRoutes from './routes/boardRoutes.js';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://tickets-lonewolf.onrender.com', // FRONT (Render, con guion)
+    'http://localhost:5173'                  // FRONT local de Vite
+  ],
+  credentials: true
+}));
 app.use(express.json());
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);
