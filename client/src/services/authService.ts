@@ -1,17 +1,30 @@
-import axios from 'axios';
+// client/src/services/authService.ts
+import api from './api'
 
-const base = (import.meta.env.VITE_API_BASE || '').replace(/\/+$/, '');
+export interface AuthUser {
+  _id: string
+  nombre: string
+  email: string
+}
 
-const api = axios.create({
-  baseURL: base, // dev: http://localhost:5000 | prod: https://ticketslonewolf.onrender.com
-  timeout: 15000,
-  headers: { 'Content-Type': 'application/json' },
-});
+export interface LoginResponse {
+  token: string
+  user: AuthUser
+}
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+export async function login(email: string, password: string): Promise<AuthUser> {
+  const { data } = await api.post<LoginResponse>('/auth/login', { email, password })
+  // guarda el token para que los requests siguientes lo usen
+  localStorage.setItem('token', data.token)
+  return data.user
+}
 
-export default api;
+export async function register(nombre: string, email: string, password: string): Promise<AuthUser> {
+  const { data } = await api.post<LoginResponse>('/auth/register', { nombre, email, password })
+  localStorage.setItem('token', data.token)
+  return data.user
+}
+
+export function logout() {
+  localStorage.removeItem('token')
+}
