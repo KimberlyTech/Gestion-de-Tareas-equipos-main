@@ -606,17 +606,7 @@ const editBoardData = ref({
   miembros: [] as User[],
 });
 const selectedEditMember = ref<User | null>(null);
-const api = axios.create({
-  baseURL: API_URL,
-});
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 // Computed properties
 const filteredBoards = computed(() => {
@@ -858,7 +848,7 @@ const updateBoard = async () => {
 };
 // Notificacion de email
 const sendEmailNotification = () => {
-  const emails = ",technology@2costaricarealestate.com";
+  const emails = "technology@2costaricarealestate.com";
   const subject = `New Ticket: ${newBoardName.value}`;
 
   const body = `
