@@ -7,6 +7,15 @@ import cors from 'cors';
 
 import authRoutes from './routes/authRoutes.js';
 import boardRoutes from './routes/boardRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+
+// otras rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/boards', boardRoutes);
+
+// nueva ruta de usuarios
+app.use('/api/users', userRoutes);
+
 
 const app = express();
 app.use(cors({
